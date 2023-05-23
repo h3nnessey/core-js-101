@@ -8,7 +8,7 @@
 
 
 /**
- * Returns the 'Fizz','Buzz' or an original number using the following rules:
+ * Returns the 'Fizz', 'Buzz' or an original number using the following rules:
  * 1) return original number
  * 2) but if number multiples of three return 'Fizz'
  * 3) for the multiples of five return 'Buzz'
@@ -27,8 +27,13 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0) {
+    if (num % 5 === 0) return 'FizzBuzz';
+    return 'Fizz';
+  }
+
+  return num % 5 === 0 ? 'Buzz' : num;
 }
 
 
@@ -43,10 +48,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  return Array(n).fill(0).map((_, i) => i + 1).reduce((acc, curr) => acc * curr, 1);
 }
-
 
 /**
  * Returns the sum of integer numbers between n1 and n2 (inclusive).
@@ -60,10 +64,9 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  return Array(n2 - n1 + 1).fill(null).map((_, i) => n1 + i).reduce((acc, curr) => (acc + curr), 0);
 }
-
 
 /**
  * Returns true, if a triangle can be built with the specified sides a, b, c
@@ -72,7 +75,7 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  * @param {number} a
  * @param {number} b
  * @param {number} c
- * @return {bool}
+ * @return {boolean}
  *
  * @example:
  *   1,2,3    =>  false
@@ -80,14 +83,14 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return (a + b > c) && (c + b > a) && (c + a > b);
 }
 
 
 /**
  * Returns true, if two specified axis-aligned rectangles overlap, otherwise false.
- * Each rectangle representing by object
+ * Each rectangle represented by object
  *  {
  *     top: 5,
  *     left: 5,
@@ -141,20 +144,20 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *
  * @param {object} circle
  * @param {object} point
- * @return {bool}
+ * @return {boolean}
  *
  * @example:
  *   { center: { x:0, y:0 }, radius:10 },  { x:0, y:0 }     => true
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle({ center, radius }, { x, y }) {
+  return Math.sqrt((x - center.x) ** 2 + (y - center.y) ** 2) < radius;
 }
 
 
 /**
- * Returns the first non repeated char in the specified strings otherwise returns null.
+ * Returns the first non-repeated char in the specified strings otherwise returns null.
  *
  * @param {string} str
  * @return {string}
@@ -164,13 +167,17 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const count = (char, string) => Array.from(string)
+    .reduce((acc, curr) => (curr === char ? acc + 1 : acc), 0);
+  const singleChar = Array.from(str).find((char) => count(char, str) === 1);
+
+  return singleChar || null;
 }
 
 
 /**
- * Returns the string representation of math interval,
+ * Returns the string representation of a math interval,
  * specified by two points and include / exclude flags.
  * See the details: https://en.wikipedia.org/wiki/Interval_(mathematics)
  *
@@ -178,8 +185,8 @@ function findFirstSingleChar(/* str */) {
  *
  * @param {number} a
  * @param {number} b
- * @param {bool} isStartIncluded
- * @param {bool} isEndIncluded
+ * @param {boolean} isStartIncluded
+ * @param {boolean} isEndIncluded
  * @return {string}
  *
  * @example
