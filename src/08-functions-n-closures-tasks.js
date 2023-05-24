@@ -10,8 +10,8 @@
 
 
 /**
- * Returns the functions composition of two specified functions f(x) and g(x).
- * The result of compose is to be a function of one argument, (lets call the argument x),
+ * Returns the function composition of two specified functions f(x) and g(x).
+ * The result of compose is to be a function of one argument, (let's call the argument x),
  * which works like applying function f to the result of applying function g to x, i.e.
  *  getComposition(f,g)(x) = f(g(x))
  *
@@ -23,8 +23,10 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  return function composed(x) {
+    return f(g(x));
+  };
 }
 
 
@@ -44,8 +46,8 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  return (num) => num ** exponent;
 }
 
 
