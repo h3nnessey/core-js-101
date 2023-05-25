@@ -155,7 +155,7 @@ function partialUsingArguments(/* fn, ...args1 */) {
 
 
 /**
- * Returns the id generator function that returns next integer starting
+ * Returns the id generator function that returns the next integer starting
  * from specified number every time when invoking.
  *
  * @param {Number} startFrom

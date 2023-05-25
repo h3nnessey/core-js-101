@@ -28,14 +28,21 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  const messagesMap = new Map([[true, 'Hooray!!! She said "Yes"!'], [false, 'Oh no, she said "No".']]);
+  return new Promise((resolve, reject) => {
+    if (typeof isPositiveAnswer === 'boolean') {
+      resolve(messagesMap.get(isPositiveAnswer));
+    } else {
+      reject(new Error('Wrong parameter is passed! Ask her again.'));
+    }
+  });
 }
 
 
 /**
- * Return Promise object that should be resolved with array containing plain values.
- * Function receive an array of Promise objects.
+ * Return Promise object that should be resolved with an array containing plain values.
+ * The Function receives an array of Promise objects.
  *
  * @param {Promise[]} array
  * @return {Promise}
@@ -48,8 +55,14 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return new Promise((resolve, reject) => {
+    const result = [];
+    array.forEach((promise) => {
+      promise.then((res) => result.push(res)).catch(reject);
+    });
+    resolve(result);
+  });
 }
 
 /**
@@ -71,8 +84,12 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return new Promise((resolve, reject) => {
+    array.forEach((promise) => {
+      promise.then(resolve).catch((err) => reject(new Error(err.message)));
+    });
+  });
 }
 
 /**

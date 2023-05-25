@@ -114,7 +114,7 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
 }
 
 /**
- * Returns a last digit of a integer number.
+ * Returns a last digit of an integer number.
  *
  * @param {number} value
  * @return {number}
@@ -213,7 +213,7 @@ function isPrime(n) {
 
 /**
  * Tries to convert value to number and returns it if conversion was successful;
- * otherwise returns default value passed as a second argument.
+ * otherwise return default value passed as a second argument.
  *
  * @param {any} value
  * @param {any} def

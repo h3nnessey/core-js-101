@@ -34,8 +34,8 @@ function concatenateStrings(value1, value2) {
  *   'b'     => 1
  *   ''      => 0
  */
-function getStringLength(/* value */) {
-  throw new Error('Not implemented');
+function getStringLength(value) {
+  return value.length;
 }
 
 /**
@@ -51,8 +51,8 @@ function getStringLength(/* value */) {
  *   'John','Doe'      => 'Hello, John Doe!'
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -65,8 +65,8 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   'Hello, John Doe!' => 'John Doe'
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  return value.replace('Hello, ', '').replace('!', '');
 }
 
 
@@ -103,7 +103,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  * Returns a string that repeated the specified number of times.
  *
  * @param {string} value
- * @param {string} count
+ * @param {number} count
  * @return {string}
  *
  * @example
@@ -142,7 +142,6 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  // replaceAll is 15.0.0v+ of node
   const brackets = ['<', '>'];
   return str.split('').reduce((acc, curr) => (brackets.includes(curr) ? acc : acc + curr), '');
 }
