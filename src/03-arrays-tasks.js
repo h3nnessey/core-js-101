@@ -9,7 +9,7 @@
 
 
 /**
- * Returns an index of the specified element in array or -1 if element is not found
+ * Returns an index of the specified element in an array or -1 if an element is not found
  *
  * @param {array} arr
  * @param {any} value
@@ -35,14 +35,14 @@ function findElement(arr, value) {
  *    2 => [ 1, 3 ]
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
-function generateOdds(/* len */) {
-  throw new Error('Not implemented');
+function generateOdds(len) {
+  return Array(len).fill(null).map((_, i) => (i * 2) + 1);
 }
 
 
 /**
  * Returns the doubled array - elements of the specified array
- * are repeated twice using original order
+ * are repeated twice using the original order
  *
  * @param {array} arr
  * @return {array}
@@ -135,7 +135,7 @@ function getStringsLength(arr) {
 }
 
 /**
- * Inserts the item into specified array at specified index
+ * Inserts the item into a specified array at specified index
  *
  * @param {array} arr
  * @param {any} item
@@ -355,7 +355,7 @@ function getItemsSum(arr) {
 }
 
 /**
- * Returns the number of all falsy value in the specified array
+ * Returns the amount of all falsy value in the specified array
  *
  * @param {array} arr
  * @return {number}
@@ -430,8 +430,8 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => a.country.localeCompare(b.country) || a.city.localeCompare(b.city));
 }
 
 /**
@@ -452,8 +452,10 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return Array(n).fill(null)
+    .map((_, i) => Array(n).fill(null)
+      .map((el, idx) => (idx === i ? 1 : 0)));
 }
 
 /**
@@ -518,8 +520,14 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((acc, curr) => {
+    const currentValue = valueSelector(curr);
+    const currentKey = keySelector(curr);
+    const newValue = acc.has(currentKey) ? [...acc.get(currentKey), currentValue] : [currentValue];
+
+    return acc.set(keySelector(curr), newValue);
+  }, new Map());
 }
 
 
