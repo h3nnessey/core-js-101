@@ -53,8 +53,14 @@ function parseDataFromIso8601(value) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+
+  if (year % 100 === 0) {
+    return year % 400 === 0;
+  }
+
+  return year % 4 === 0;
 }
 
 
@@ -62,8 +68,8 @@ function isLeapYear(/* date */) {
  * Returns the string representation of the timespan between two dates.
  * The format of output string is "HH:mm:ss.sss"
  *
- * @param {date} startDate
- * @param {date} endDate
+ * @param {Date} startDate
+ * @param {Date} endDate
  * @return {string}
  *
  * @example:
@@ -73,8 +79,31 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const getDateInfoFromObject = (dateObj) => ({
+    hrs: dateObj.getHours(),
+    mins: dateObj.getMinutes(),
+    secs: dateObj.getSeconds(),
+    msecs: dateObj.getMilliseconds(),
+  });
+
+  const setLeadingZeros = (num, len = 2) => num.toString().padStart(len, '0');
+
+  const getFormatedTimeSpanStringFromObjects = (startObj, endObj) => {
+    const diff = {
+      hrs: setLeadingZeros(endObj.hrs - startObj.hrs),
+      mins: setLeadingZeros(endObj.mins - startObj.mins),
+      secs: setLeadingZeros(endObj.secs - startObj.secs),
+      msecs: setLeadingZeros(endObj.msecs - startObj.msecs, 3),
+    };
+
+    return `${diff.hrs}:${diff.mins}:${diff.secs}.${diff.msecs}`;
+  };
+
+  const startDateInfo = getDateInfoFromObject(startDate);
+  const endDateInfo = getDateInfoFromObject(endDate);
+
+  return getFormatedTimeSpanStringFromObjects(startDateInfo, endDateInfo);
 }
 
 
@@ -85,7 +114,7 @@ function timeSpanToString(/* startDate, endDate */) {
  *
  * SMALL TIP: convert to radians just once, before return in order to not lost precision
  *
- * @param {date} date
+ * @param {Date} date
  * @return {number}
  *
  * @example:
@@ -94,8 +123,13 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  const hrs = Math.abs(12 - date.getUTCHours());
+  const mins = date.getUTCMinutes();
+  const angleInDegrees = Math.abs((hrs * 30 + mins * 0.5) - mins * 6);
+  const angleInRads = (Math.min(360 - angleInDegrees, angleInDegrees) * Math.PI) / 180;
+
+  return angleInRads;
 }
 
 
