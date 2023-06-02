@@ -113,10 +113,13 @@ async function chainPromises(array, action) {
   const promiseAll = async (arr) => {
     const result = [];
 
-    await arr.forEach((promise) => {
-      promise
-        .then((value) => result.push(value))
-        .catch((err) => result.push(err));
+    await arr.forEach(async (promise) => {
+      try {
+        const value = await promise;
+        result.push(value);
+      } catch (err) {
+        result.push(err);
+      }
     });
 
     return result.filter((item) => !(item instanceof Error));
