@@ -173,6 +173,7 @@ function isInsideCircle({ center, radius }, { x, y }) {
 function findFirstSingleChar(str) {
   const count = (char, string) => Array.from(string)
     .reduce((acc, curr) => (curr === char ? acc + 1 : acc), 0);
+
   const singleChar = Array.from(str).find((char) => count(char, str) === 1);
 
   return singleChar || null;
@@ -262,8 +263,14 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  return ccn
+    .toString()
+    .split('')
+    .map(Number)
+    .reverse()
+    .map((num, i) => (i % 2 && ((num * 2 > 9 && num * 2 - 9) || num * 2)) || num)
+    .reduce((acc, curr) => acc + curr, 0) % 10 === 0;
 }
 
 /**
