@@ -313,7 +313,7 @@ function getDigitalRoot(number) {
  *   '' => true
  *   '[]'  => true
  *   '{}'  => true
- *   '()   => true
+ *   '()'   => true
  *   '[[]' => false
  *   ']['  => false
  *   '[[][][[]]]' => true
@@ -321,8 +321,31 @@ function getDigitalRoot(number) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str.length % 2) return false;
+
+  const bracketsConfig = [
+    { open: '[', close: ']' },
+    { open: '(', close: ')' },
+    { open: '{', close: '}' },
+    { open: '<', close: '>' },
+  ];
+
+  const brackets = Array.from(str);
+
+  const bracketsStack = [];
+
+  brackets.forEach((bracket) => {
+    bracketsConfig.forEach(({ open, close }) => {
+      const stackHead = bracketsStack[bracketsStack.length - 1];
+
+      if (bracket === open) bracketsStack.push(bracket);
+
+      if (bracket === close && stackHead === open) bracketsStack.pop();
+    });
+  });
+
+  return !(bracketsStack.length);
 }
 
 
@@ -386,8 +409,22 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rowsCount = m1.length;
+  const rowLength = m1[0].length;
+  const columnsCount = m2[0].length;
+
+  const matrixProduct = Array(rowsCount).fill(null).map(() => Array(columnsCount).fill(0));
+
+  for (let row = 0; row < rowsCount; row += 1) {
+    for (let column = 0; column < columnsCount; column += 1) {
+      for (let i = 0; i < rowLength; i += 1) {
+        matrixProduct[row][column] += m1[row][i] * m2[i][column];
+      }
+    }
+  }
+
+  return matrixProduct;
 }
 
 
