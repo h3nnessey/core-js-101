@@ -249,7 +249,7 @@ function reverseInteger(num) {
  *
  * See algorithm here : https://en.wikipedia.org/wiki/Luhn_algorithm
  *
- * @param {number} cnn
+ * @param {number} ccn
  * @return {boolean}
  *
  * @example:
@@ -287,10 +287,10 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(number) {
-  if (number <= 9) return number;
+function getDigitalRoot(n) {
+  if (n <= 9) return n;
 
-  const sum = number.toString().split('').map(Number).reduce((acc, curr) => acc + curr, 0);
+  const sum = n.toString().split('').map(Number).reduce((acc, curr) => acc + curr, 0);
 
   if (sum > 9) {
     return getDigitalRoot(sum);
@@ -375,7 +375,7 @@ function toNaryString(num, n) {
 
 
 /**
- * Returns the common directory path for specified array of full filenames.
+ * Returns the common directory path for a specified array of full filenames.
  *
  * @param {array} pathes
  * @return {string}
@@ -386,8 +386,13 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const paths = pathes.map((path) => new Set(path.split('/')));
+
+  const pathsIntersection = paths
+    .reduce((acc, curr) => new Set([...acc].filter((path) => curr.has(path))), paths[0]);
+
+  return (pathsIntersection.size && `${[...pathsIntersection].join('/')}/`) || '';
 }
 
 
@@ -432,7 +437,7 @@ function getMatrixProduct(m1, m2) {
  * Returns the evaluation of the specified tic-tac-toe position.
  * See the details: https://en.wikipedia.org/wiki/Tic-tac-toe
  *
- * Position is provides as 3x3 array with the following values: 'X','0', undefined
+ * Position is provided as 3x3 array with the following values: 'X','0', undefined
  * Function should return who is winner in the current position according to the game rules.
  * The result can be: 'X','0',undefined
  *
@@ -458,8 +463,35 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const size = position.length;
+
+  const tttConfig = {
+    rows: [...position],
+    columns: Array(size)
+      .fill(null)
+      .map((_, i) => Array(size).fill(null).map(($, j) => position[j][i])),
+    diagonals: [
+      Array(size)
+        .fill(null)
+        .map((_, i) => position[i][i]),
+      Array(size)
+        .fill(null)
+        .map((_, i) => position[i][size - i - 1])],
+  };
+
+  let winner;
+
+  Object.values(tttConfig).forEach((value) => {
+    value.forEach((array) => {
+      if (!winner && array.length === size) {
+        if (array.every((item) => item === 'X')) winner = 'X';
+        if (array.every((item) => item === '0')) winner = '0';
+      }
+    });
+  });
+
+  return winner;
 }
 
 
