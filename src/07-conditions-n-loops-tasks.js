@@ -470,7 +470,9 @@ function evaluateTicTacToePosition(position) {
     rows: [...position],
     columns: Array(size)
       .fill(null)
-      .map((_, i) => Array(size).fill(null).map(($, j) => position[j][i])),
+      .map((_, i) => Array(size)
+        .fill(null)
+        .map(($, j) => position[j][i])),
     diagonals: [
       Array(size)
         .fill(null)

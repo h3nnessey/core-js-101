@@ -6,7 +6,6 @@
  *                                                                                                *
  ************************************************************************************************ */
 
-
 /**
  * Returns the rectangle object with width and height parameters and getArea() method
  *
@@ -26,7 +25,6 @@ function Rectangle(width, height) {
   this.getArea = () => this.width * this.height;
 }
 
-
 /**
  * Returns the JSON representation of specified object
  *
@@ -40,7 +38,6 @@ function Rectangle(width, height) {
 function getJSON(obj) {
   return JSON.stringify(obj);
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -56,7 +53,6 @@ function getJSON(obj) {
 function fromJSON(proto, json) {
   return Object.setPrototypeOf(JSON.parse(json), proto);
 }
-
 
 /**
  * Css selectors builder
@@ -113,35 +109,118 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  state: {
+    selector: '',
+    order: 0,
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: this.state.selector + value,
+          order: this.getSelectorOrder('element'),
+        },
+      },
+    });
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: `${this.state.selector}#${value}`,
+          order: this.getSelectorOrder('id'),
+        },
+      },
+    });
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: `${this.state.selector}.${value}`,
+          order: this.getSelectorOrder('class'),
+        },
+      },
+    });
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: `${this.state.selector}[${value}]`,
+          order: this.getSelectorOrder('attr'),
+        },
+      },
+    });
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: `${this.state.selector}:${value}`,
+          order: this.getSelectorOrder('pseudoClass'),
+        },
+      },
+    });
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    return Object.create(this, {
+      state: {
+        value: {
+          selector: `${this.state.selector}::${value}`,
+          order: this.getSelectorOrder('pseudoElement'),
+        },
+      },
+    });
+  },
+
+  combine(selector1, combinator, selector2) {
+    return Object.create(this, {
+      state: {
+        value: {
+          ...this.state,
+          selector: `${selector1.stringify()} ${combinator} ${selector2.stringify()}`,
+        },
+      },
+    });
+  },
+
+  stringify() {
+    return this.state.selector;
+  },
+
+  getSelectorOrder(selectorName) {
+    const errorMessages = {
+      wrongOrder: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      multiplyCalls: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+    };
+
+    const singleCallSelectors = [1, 2, 6];
+
+    const order = {
+      element: 1,
+      id: 2,
+      class: 3,
+      attr: 4,
+      pseudoClass: 5,
+      pseudoElement: 6,
+    }[selectorName];
+
+    if (this.state.order > order) throw new Error(errorMessages.wrongOrder);
+
+    if (singleCallSelectors.includes(order) && order === this.state.order) {
+      throw new Error(errorMessages.multiplyCalls);
+    }
+
+    return order;
   },
 };
-
 
 module.exports = {
   Rectangle,
